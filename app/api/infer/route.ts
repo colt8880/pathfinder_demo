@@ -52,11 +52,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(fallback);
     }
 
-    // Strip markdown code fences if present
-    let jsonText = textBlock.text.trim();
-    if (jsonText.startsWith("```")) {
-      jsonText = jsonText.replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "");
+    // Extract JSON object from response (handles code fences, preamble, etc.)
+    const raw = textBlock.text;
+    const start = raw.indexOf("{");
+    const end = raw.lastIndexOf("}");
+    if (start === -1 || end === -1) {
+      console.error("F07: No JSON object found in response");
+      return NextResponse.json(fallback);
     }
+    const jsonText = raw.slice(start, end + 1);
 
     // Parse the JSON response
     const parsed = JSON.parse(jsonText) as {
