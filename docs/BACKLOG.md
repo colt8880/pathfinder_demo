@@ -12,7 +12,7 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [ ] **F06: Network Dashboard View** — `/docs/features/F06-network-dashboard-view.md`
+- [~] **F06: Network Dashboard View** — `/docs/features/F06-network-dashboard-view.md`
 
 ## Next
 
