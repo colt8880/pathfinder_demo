@@ -12,7 +12,7 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [ ] **F05: Clinical Reasoning View** — `/docs/features/F05-clinical-reasoning-view.md`
+- [~] **F05: Clinical Reasoning View** — `/docs/features/F05-clinical-reasoning-view.md`
 
 ## Next
 
