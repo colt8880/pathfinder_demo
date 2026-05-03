@@ -29,7 +29,7 @@ export default function Card({
       {(title || meta || action) && (
         <header
           style={{
-            padding: `${Math.max(padding - 4, 12)}px ${Math.max(padding, 16)}px`,
+            padding: "12px 16px",
             borderBottom: "1px solid var(--border-divider)",
             display: "flex",
             alignItems: "center",
