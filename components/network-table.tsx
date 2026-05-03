@@ -41,7 +41,7 @@ export default function NetworkTable({ events }: { events: ReferralEvent[] }) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "100px 80px 160px 140px 1fr 100px 90px",
+          gridTemplateColumns: "100px 80px 160px 1fr 120px 100px 90px",
           background: "var(--surface-sunken)",
           borderBottom: "1px solid var(--border-default)",
         }}
@@ -67,7 +67,7 @@ export default function NetworkTable({ events }: { events: ReferralEvent[] }) {
           key={e.id}
           style={{
             display: "grid",
-            gridTemplateColumns: "100px 80px 160px 140px 1fr 100px 90px",
+            gridTemplateColumns: "100px 80px 160px 1fr 120px 100px 90px",
             height: 36,
             alignItems: "center",
             borderBottom: "1px solid var(--border-divider)",
