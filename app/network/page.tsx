@@ -95,9 +95,6 @@ export default function NetworkView() {
           ))}
         </div>
 
-        {/* Leaked referrals table */}
-        <NetworkTable events={leaked} />
-
         {/* Recommended action */}
         <Card
           padding={20}
@@ -119,6 +116,9 @@ export default function NetworkView() {
             </div>
           </div>
         </Card>
+
+        {/* Leaked referrals table */}
+        <NetworkTable events={leaked} />
       </div>
     </div>
   );
