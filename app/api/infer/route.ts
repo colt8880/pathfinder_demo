@@ -52,8 +52,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(fallback);
     }
 
+    // Strip markdown code fences if present
+    let jsonText = textBlock.text.trim();
+    if (jsonText.startsWith("```")) {
+      jsonText = jsonText.replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "");
+    }
+
     // Parse the JSON response
-    const parsed = JSON.parse(textBlock.text) as {
+    const parsed = JSON.parse(jsonText) as {
       subSpecialty: string;
       confidence: number;
       rationale: string;
