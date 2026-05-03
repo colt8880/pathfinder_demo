@@ -24,48 +24,40 @@ export default function PcpView() {
             padding: "24px",
           }}
         >
-          <div
-            style={{
-              maxWidth: 1200,
-              margin: "0 auto",
-              display: "grid",
-              gridTemplateColumns: "1fr 420px",
-              gap: 16,
-              alignItems: "start",
-            }}
-          >
-            {/* Left column: encounter note */}
-            <EncounterNoteDisplay note={note} />
+          <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
+            {/* Referral order — full width */}
+            <Card title="Referral order" padding={16}>
+              <input
+                type="text"
+                readOnly
+                value="Orthopedic Surgery"
+                style={{
+                  width: "100%",
+                  height: "var(--row-height-control)",
+                  padding: "0 12px",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "var(--radius-control)",
+                  background: "var(--surface-sunken)",
+                  font: "400 14px/20px var(--font-sans)",
+                  color: "var(--ink-primary)",
+                }}
+              />
+            </Card>
 
-            {/* Right column: referral order + Pathfinder */}
+            {/* Two-column: note left, Pathfinder right — tops aligned */}
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
+                display: "grid",
+                gridTemplateColumns: "1fr 420px",
                 gap: 16,
-                position: "sticky",
-                top: 24,
+                alignItems: "start",
               }}
             >
-              <Card title="Referral order" padding={16}>
-                <input
-                  type="text"
-                  readOnly
-                  value="Orthopedic Surgery"
-                  style={{
-                    width: "100%",
-                    height: "var(--row-height-control)",
-                    padding: "0 12px",
-                    border: "1px solid var(--border-default)",
-                    borderRadius: "var(--radius-control)",
-                    background: "var(--surface-sunken)",
-                    font: "400 14px/20px var(--font-sans)",
-                    color: "var(--ink-primary)",
-                  }}
-                />
-              </Card>
+              <EncounterNoteDisplay note={note} />
 
-              <PathfinderSection patientId={PATIENT_ID} />
+              <div style={{ position: "sticky", top: 24 }}>
+                <PathfinderSection patientId={PATIENT_ID} />
+              </div>
             </div>
           </div>
         </div>
