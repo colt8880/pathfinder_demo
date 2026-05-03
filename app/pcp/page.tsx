@@ -37,7 +37,7 @@ export default function PcpView() {
             {/* Left column: encounter note */}
             <EncounterNoteDisplay note={note} />
 
-            {/* Right column: referral order + Pathfinder, top-aligned with note */}
+            {/* Right column: referral order + Pathfinder */}
             <div
               style={{
                 display: "flex",
