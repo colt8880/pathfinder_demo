@@ -1,16 +1,14 @@
 import { getPatient } from "@/lib/data/patients";
 import { getNote } from "@/lib/data/notes";
-import { getMockInference } from "@/lib/inference";
 import { PatientBanner, EmrSidebar } from "@/components/emr-chrome";
 import EncounterNoteDisplay from "@/components/encounter-note";
-import PathfinderCard from "@/components/pathfinder-card";
+import PathfinderSection from "@/components/pathfinder-section";
 
 const PATIENT_ID = "pat-001";
 
 export default function PcpView() {
   const patient = getPatient(PATIENT_ID)!;
   const note = getNote(PATIENT_ID)!;
-  const inference = getMockInference(PATIENT_ID)!;
 
   return (
     <div className="flex flex-1 flex-col">
@@ -34,8 +32,8 @@ export default function PcpView() {
               />
             </div>
 
-            {/* Pathfinder card */}
-            <PathfinderCard inference={inference} />
+            {/* Pathfinder card (fetches inference via API) */}
+            <PathfinderSection patientId={PATIENT_ID} />
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [ ] **F07: AI Inference API** — `/docs/features/F07-ai-inference-api.md`
+- [~] **F07: AI Inference API** — `/docs/features/F07-ai-inference-api.md`
 
 ## Next
 
