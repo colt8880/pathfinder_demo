@@ -1,25 +1,144 @@
+/* =========================================================================
+   Pathfinder · globals.css
+   Tailwind v4 + Operator Design System tokens.
+   Replaces the default Next.js globals.css.
+   ========================================================================= */
+
+/* ---- Fonts ----
+   Inter for display + body. JetBrains Mono for ALL numbers, IDs, timestamps,
+   durations, percentages, code. Loaded from Google Fonts. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ---------- Surfaces (light) ---------- */
+  --surface-page: #FFFFFF;
+  --surface-raised: #FFFFFF;
+  --surface-sunken: #F7F8FA;
+  --surface-hover: #F0F2F5;
+
+  /* ---------- Ink ---------- */
+  --ink-primary: #0F1115;
+  --ink-secondary: #4B5563;
+  --ink-muted: #6B7280;
+  --ink-disabled: #9CA3AF;
+
+  /* ---------- Semantic accents ---------- */
+  --signal-primary: #2563EB;
+  --signal-primary-hover: #1D4ED8;
+  --signal-primary-subtle: rgba(37, 99, 235, 0.10);
+
+  --positive: #16A34A;
+  --positive-subtle: rgba(22, 163, 74, 0.10);
+
+  --negative: #DC2626;
+  --negative-subtle: rgba(220, 38, 38, 0.10);
+
+  --warning: #D97706;
+  --warning-subtle: rgba(217, 119, 6, 0.10);
+
+  /* ---------- Structural ---------- */
+  --border-default: #E5E7EB;
+  --border-strong: #D1D5DB;
+  --border-divider: #F0F2F5;
+  --focus-ring: rgba(37, 99, 235, 0.5);
+
+  /* ---------- Type families ---------- */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* ---------- Type scale ---------- */
+  --text-xs:  11px; --lh-xs:  16px;
+  --text-sm:  13px; --lh-sm:  18px;
+  --text-base:14px; --lh-base:20px;
+  --text-md:  15px; --lh-md:  22px;
+  --text-lg:  17px; --lh-lg:  24px;
+  --text-xl:  20px; --lh-xl:  28px;
+  --text-2xl: 24px; --lh-2xl: 32px;
+  --text-3xl: 30px; --lh-3xl: 36px;
+
+  /* ---------- Tracking ---------- */
+  --tracking-display: -0.015em;
+  --tracking-body:    -0.005em;
+  --tracking-mono:     0;
+  --tracking-eyebrow:  0.06em;
+
+  /* ---------- Spacing (4px base) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* ---------- Radii ---------- */
+  --radius-chip: 4px;     /* badges, status chips */
+  --radius-control: 6px;  /* buttons, inputs */
+  --radius-card: 8px;     /* cards, nav items */
+
+  /* ---------- Elevation ---------- */
+  --shadow-sm: 0 1px 2px rgba(15, 17, 21, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 17, 21, 0.06), 0 1px 3px rgba(15, 17, 21, 0.04);
+  --shadow-lg: 0 20px 40px rgba(15, 17, 21, 0.08), 0 2px 6px rgba(15, 17, 21, 0.04);
+
+  /* ---------- Layout ---------- */
+  --row-height-table: 36px;
+  --row-height-control: 32px;
+  --nav-top-height: 52px;
+  --nav-side-width: 220px;
+
+  /* ---------- Motion ---------- */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --duration-fast: 80ms;
+  --duration-base: 140ms;
+
+  /* ---- Tailwind v4 theme bridge ---- */
+  --color-background: var(--surface-page);
+  --color-foreground: var(--ink-primary);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================== Base ============================== */
+html, body {
+  background: var(--surface-page);
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--lh-base);
+  letter-spacing: var(--tracking-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================== Utilities ============================== */
+/* Eyebrow label — UPPERCASE 11px tracked */
+.op-eyebrow {
+  font: 500 11px/16px var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--ink-secondary);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
+/* Mono / numeric — apply to every number a user might compare or parse */
+.op-num,
+.op-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-mono);
+}
+
+/* Focus ring — always visible, 2px signal blue at 50% with 2px offset */
+.op-focus:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Spin for loading indicators */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

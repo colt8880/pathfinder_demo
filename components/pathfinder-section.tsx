@@ -24,7 +24,6 @@ export default function PathfinderSection({
   // Advance progress steps while loading
   useEffect(() => {
     if (!loading) return;
-    setStepIndex(0);
     const interval = setInterval(() => {
       setStepIndex((prev) =>
         prev < PROGRESS_STEPS.length - 1 ? prev + 1 : prev
@@ -34,6 +33,7 @@ export default function PathfinderSection({
   }, [loading]);
 
   const runInference = useCallback(async () => {
+    setStepIndex(0);
     setLoading(true);
     try {
       const res = await fetch("/api/infer", {
