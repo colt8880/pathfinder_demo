@@ -12,7 +12,7 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [ ] **F08: README + Polish** — `/docs/features/F08-readme-and-polish.md`
+- [~] **F08: README + Polish** — `/docs/features/F08-readme-and-polish.md`
 
 ## Next
 
