@@ -36,7 +36,13 @@ export default function NetworkTable({ events }: { events: ReferralEvent[] }) {
   const arrow = (key: SortKey) => (sortKey === key ? (sortDir === "asc" ? " \u25B2" : " \u25BC") : "");
 
   return (
-    <Card title="Leaked referrals" padding={0} style={{ overflow: "hidden" }}>
+    <Card
+      title="Leaked referrals"
+      meta={`${events.length} referrals`}
+      padding={0}
+      style={{ overflow: "hidden" }}
+      headerStyle={{ background: "var(--surface-sunken)", borderBottom: "1px solid var(--border-default)" }}
+    >
       {/* Header row */}
       <div
         style={{
