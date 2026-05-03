@@ -12,7 +12,7 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [ ] **F01: Project Skeleton + Deploy** — `/docs/features/F01-skeleton.md`
+- [~] **F01: Project Skeleton + Deploy** — `/docs/features/F01-skeleton.md`
 
 ## Next
 
