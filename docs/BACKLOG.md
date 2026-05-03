@@ -12,13 +12,12 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [~] **F02: Data Layer** — `/docs/features/F02-data-layer.md`
+- [ ] **F03: App Shell + Navigation** — `/docs/features/F03-app-shell.md`
 
 ## Next
 
 Queued in build order. Pull from the top when `## Now` is empty.
 
-- [ ] **F03: App Shell + Navigation** — `/docs/features/F03-app-shell.md`
 - [ ] **F04: PCP Order Entry View** — `/docs/features/F04-pcp-order-view.md`
 - [ ] **F05: Clinical Reasoning View** — `/docs/features/F05-clinical-reasoning-view.md`
 - [ ] **F06: Network Dashboard View** — `/docs/features/F06-network-dashboard-view.md`
@@ -39,6 +38,7 @@ Optional polish items. Only pick these up if F01-F08 are complete and there is b
 
 Move features here as they complete. Most recent at top.
 
+- [x] **F02: Data Layer**
 - [x] **F01: Project Skeleton + Deploy**
 
 ## Build order rationale
