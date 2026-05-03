@@ -12,7 +12,7 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [~] **F08: README + Polish** — `/docs/features/F08-readme-and-polish.md`
+All core features complete.
 
 ## Next
 
@@ -33,6 +33,7 @@ Optional polish items. Only pick these up if F01-F08 are complete and there is b
 
 Move features here as they complete. Most recent at top.
 
+- [x] **F08: README + Polish**
 - [x] **F07: AI Inference API**
 - [x] **F06: Network Dashboard View**
 - [x] **F05: Clinical Reasoning View**
