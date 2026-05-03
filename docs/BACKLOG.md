@@ -12,13 +12,12 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [~] **F06: Network Dashboard View** — `/docs/features/F06-network-dashboard-view.md`
+- [ ] **F07: AI Inference API** — `/docs/features/F07-ai-inference-api.md`
 
 ## Next
 
 Queued in build order. Pull from the top when `## Now` is empty.
 
-- [ ] **F07: AI Inference API** — `/docs/features/F07-ai-inference-api.md`
 - [ ] **F08: README + Polish** — `/docs/features/F08-readme-and-polish.md`
 
 ## Later
@@ -35,6 +34,7 @@ Optional polish items. Only pick these up if F01-F08 are complete and there is b
 
 Move features here as they complete. Most recent at top.
 
+- [x] **F06: Network Dashboard View**
 - [x] **F05: Clinical Reasoning View**
 - [x] **F04: PCP Order Entry View**
 - [x] **F03: App Shell + Navigation**
