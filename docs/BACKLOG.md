@@ -12,7 +12,7 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [ ] **F03: App Shell + Navigation** — `/docs/features/F03-app-shell.md`
+- [~] **F03: App Shell + Navigation** — `/docs/features/F03-app-shell.md`
 
 ## Next
 
