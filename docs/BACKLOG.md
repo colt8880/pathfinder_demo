@@ -12,7 +12,7 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [ ] **F04: PCP Order Entry View** — `/docs/features/F04-pcp-order-view.md`
+- [~] **F04: PCP Order Entry View** — `/docs/features/F04-pcp-order-view.md`
 
 ## Next
 
