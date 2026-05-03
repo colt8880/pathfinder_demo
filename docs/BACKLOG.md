@@ -12,7 +12,7 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [ ] **F02: Data Layer** — `/docs/features/F02-data-layer.md`
+- [~] **F02: Data Layer** — `/docs/features/F02-data-layer.md`
 
 ## Next
 
