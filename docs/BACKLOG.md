@@ -12,7 +12,7 @@ This is the source of truth for what to build next. Update it as work progresses
 
 The current feature in active development. One at a time.
 
-- [~] **F01: Project Skeleton + Deploy** — `/docs/features/F01-skeleton.md`
+- [x] **F01: Project Skeleton + Deploy** — `/docs/features/F01-skeleton.md`
 
 ## Next
 
@@ -40,7 +40,7 @@ Optional polish items. Only pick these up if F01-F08 are complete and there is b
 
 Move features here as they complete. Most recent at top.
 
-(empty)
+- [x] **F01: Project Skeleton + Deploy**
 
 ## Build order rationale
 
