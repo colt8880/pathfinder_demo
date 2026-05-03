@@ -8,9 +8,15 @@ import SpecialistRow from "./specialist-row";
 export default function PathfinderCard({
   inference,
   loading,
+  source,
+  progressStep,
+  onRun,
 }: {
   inference: InferenceResult | null;
   loading?: boolean;
+  source?: "live" | "mock" | null;
+  progressStep?: string;
+  onRun?: () => void;
 }) {
   const [scheduled, setScheduled] = useState(false);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
@@ -26,8 +32,19 @@ export default function PathfinderCard({
           <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             Pathfinder
           </span>
+          {source && (
+            <span
+              className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                source === "live"
+                  ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                  : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
+              }`}
+            >
+              {source === "live" ? "Live AI" : "Mock fallback"}
+            </span>
+          )}
         </div>
-        {!loading && (
+        {!loading && inference && (
           <button
             onClick={() => setShowHowItWorks(!showHowItWorks)}
             className="text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
@@ -47,20 +64,37 @@ export default function PathfinderCard({
       )}
 
       <div className="space-y-4 px-5 py-4">
-        {/* Loading state */}
-        {loading && (
-          <div className="flex items-center gap-3 py-4">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              Pathfinder is reading the chart...
+        {/* Idle state: show run button */}
+        {!loading && !inference && (
+          <div className="flex flex-col items-center gap-3 py-4">
+            <p className="text-sm text-zinc-500">
+              Pathfinder can analyze this encounter note and recommend a
+              sub-specialty referral.
             </p>
+            <button
+              onClick={onRun}
+              className="rounded-md bg-blue-600 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+            >
+              Run Pathfinder
+            </button>
+          </div>
+        )}
+
+        {/* Loading state with progress steps */}
+        {loading && (
+          <div className="py-4">
+            <div className="flex items-center gap-3">
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+              <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                {progressStep}
+              </p>
+            </div>
           </div>
         )}
 
         {/* Loaded content */}
         {!loading && inference && (
           <>
-            {/* Scheduled confirmation */}
             {scheduled ? (
               <div className="rounded-md border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950/30">
                 <p className="text-sm font-medium text-green-800 dark:text-green-300">
@@ -79,7 +113,6 @@ export default function PathfinderCard({
               </div>
             ) : (
               <>
-                {/* Recommendation */}
                 <div>
                   <p className="text-sm text-zinc-900 dark:text-zinc-100">
                     Pathfinder recommends:{" "}
@@ -96,7 +129,6 @@ export default function PathfinderCard({
                   </p>
                 </div>
 
-                {/* Ranked specialists */}
                 <div className="space-y-2">
                   {inference.rankedSpecialists.slice(0, 3).map((specialist, i) => (
                     <SpecialistRow
@@ -112,7 +144,6 @@ export default function PathfinderCard({
               </>
             )}
 
-            {/* Action links */}
             <div className="flex items-center gap-4 border-t border-blue-100 pt-3 dark:border-blue-900">
               <Link
                 href="/reasoning"

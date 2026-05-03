@@ -20,8 +20,7 @@ export async function POST(request: NextRequest) {
 
   const client = getClient();
   if (!client) {
-    // No API key, return mock
-    return NextResponse.json(fallback);
+    return NextResponse.json({ ...fallback, source: "mock" });
   }
 
   try {
@@ -49,7 +48,7 @@ export async function POST(request: NextRequest) {
     const textBlock = response.content.find((b) => b.type === "text");
     if (!textBlock || textBlock.type !== "text") {
       console.error("F07: No text block in response");
-      return NextResponse.json(fallback);
+      return NextResponse.json({ ...fallback, source: "mock" });
     }
 
     // Extract JSON object from response (handles code fences, preamble, etc.)
@@ -58,7 +57,7 @@ export async function POST(request: NextRequest) {
     const end = raw.lastIndexOf("}");
     if (start === -1 || end === -1) {
       console.error("F07: No JSON object found in response");
-      return NextResponse.json(fallback);
+      return NextResponse.json({ ...fallback, source: "mock" });
     }
     const jsonText = raw.slice(start, end + 1);
 
@@ -82,7 +81,7 @@ export async function POST(request: NextRequest) {
         "F07: No specialists match inferred sub-specialty:",
         parsed.subSpecialty
       );
-      return NextResponse.json(fallback);
+      return NextResponse.json({ ...fallback, source: "mock" });
     }
 
     const result: InferenceResult = {
@@ -93,9 +92,9 @@ export async function POST(request: NextRequest) {
       rankedSpecialists,
     };
 
-    return NextResponse.json(result);
+    return NextResponse.json({ ...result, source: "live" });
   } catch (error) {
     console.error("F07: Inference error, returning fallback:", error);
-    return NextResponse.json(fallback);
+    return NextResponse.json({ ...fallback, source: "mock" });
   }
 }

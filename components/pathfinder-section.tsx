@@ -1,8 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { InferenceResult } from "@/lib/types";
 import PathfinderCard from "./pathfinder-card";
+
+const PROGRESS_STEPS = [
+  "Reading encounter note...",
+  "Extracting clinical signals...",
+  "Inferring sub-specialty...",
+  "Ranking in-network specialists...",
+];
 
 export default function PathfinderSection({
   patientId,
@@ -10,38 +17,47 @@ export default function PathfinderSection({
   patientId: string;
 }) {
   const [inference, setInference] = useState<InferenceResult | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [source, setSource] = useState<"live" | "mock" | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
 
+  // Advance progress steps while loading
   useEffect(() => {
-    // If already cached, don't re-fetch
-    if (inference) return;
+    if (!loading) return;
+    setStepIndex(0);
+    const interval = setInterval(() => {
+      setStepIndex((prev) =>
+        prev < PROGRESS_STEPS.length - 1 ? prev + 1 : prev
+      );
+    }, 800);
+    return () => clearInterval(interval);
+  }, [loading]);
 
-    let cancelled = false;
-
-    async function fetchInference() {
-      try {
-        const res = await fetch("/api/infer", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ patientId }),
-        });
-        const data = await res.json();
-        if (!cancelled) {
-          setInference(data);
-          setLoading(false);
-        }
-      } catch {
-        // On any client-side error, fetch the fallback
-        console.error("Failed to fetch inference");
-        setLoading(false);
-      }
+  const runInference = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/infer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ patientId }),
+      });
+      const data = await res.json();
+      setSource(data.source ?? null);
+      setInference(data);
+    } catch {
+      console.error("Failed to fetch inference");
+    } finally {
+      setLoading(false);
     }
+  }, [patientId]);
 
-    fetchInference();
-    return () => {
-      cancelled = true;
-    };
-  }, [patientId, inference]);
-
-  return <PathfinderCard inference={inference} loading={loading} />;
+  return (
+    <PathfinderCard
+      inference={inference}
+      loading={loading}
+      source={source}
+      progressStep={PROGRESS_STEPS[stepIndex]}
+      onRun={runInference}
+    />
+  );
 }
