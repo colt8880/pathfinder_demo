@@ -6,7 +6,24 @@ import { getClient } from "@/lib/anthropic";
 import { SYSTEM_PROMPT, buildUserPrompt } from "@/lib/prompts";
 import { InferenceResult } from "@/lib/types";
 
+// Simple in-memory rate limiter: 10 requests per IP per hour
+const rateMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 10;
+const WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT;
+}
+
 export async function POST(request: NextRequest) {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   const { patientId } = await request.json();
   const note = getNote(patientId);
   const fallback = getMockInference(patientId);
@@ -20,6 +37,11 @@ export async function POST(request: NextRequest) {
 
   const client = getClient();
   if (!client) {
+    return NextResponse.json({ ...fallback, source: "mock" });
+  }
+
+  if (isRateLimited(ip)) {
+    console.log(`Rate limited: ${ip}`);
     return NextResponse.json({ ...fallback, source: "mock" });
   }
 
