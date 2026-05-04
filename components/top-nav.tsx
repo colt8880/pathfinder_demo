@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, Stethoscope } from "lucide-react";
 import Badge from "./ui/badge";
+import { TourButton } from "./welcome-tour";
 
 const tabs: [string, string][] = [
   ["/pcp", "PCP order entry"],
@@ -94,6 +95,9 @@ export default function TopNav() {
         />
         Synthetic data demo
       </Badge>
+
+      {/* Tour help button */}
+      <TourButton />
 
       {/* Search */}
       <div

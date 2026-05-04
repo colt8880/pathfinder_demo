@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import TopNav from "@/components/top-nav";
-import WelcomeTour from "@/components/welcome-tour";
+import { TourProvider } from "@/components/welcome-tour";
 
 export const metadata: Metadata = {
   title: "Pathfinder",
@@ -16,9 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en" style={{ height: "100%" }}>
       <body style={{ minHeight: "100%", display: "flex", flexDirection: "column", margin: 0 }}>
-        <TopNav />
-        <main style={{ display: "flex", flexDirection: "column", flex: 1 }}>{children}</main>
-        <WelcomeTour />
+        <TourProvider>
+          <TopNav />
+          <main style={{ display: "flex", flexDirection: "column", flex: 1 }}>{children}</main>
+        </TourProvider>
       </body>
     </html>
   );
