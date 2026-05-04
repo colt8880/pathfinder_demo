@@ -10,25 +10,35 @@ Honest accounting of what this prototype does and does not do:
 
 - **EMR shell**: Visual mock. Production would integrate via SMART on FHIR + CDS Hooks.
 - **Specialist directory**: Synthetic data, 15 entries across orthopedics, cardiology, GI, and neurology.
-- **Encounter notes**: Synthetic, written to read like real PCP documentation with accurate clinical language.
+- **Encounter notes**: Synthetic, written to read like real PCP documentation with accurate clinical language. Sectioned by S/O/A/P with highlightable evidence phrases.
 - **Leakage data**: Synthetic. 30 days, 60 referrals, 30% leakage rate with a concentrated shoulder pattern.
-- **AI inference**: REAL. Anthropic API call to Claude Sonnet, with a hardcoded fallback for stage reliability.
+- **AI inference**: REAL. Anthropic API call to Claude Sonnet, with a hardcoded fallback for stage reliability. Rate-limited to 10 requests per IP per hour; falls back to mock silently after that.
+- **Scheduling flow**: Visual mock. Inline slot picker and confirmation state simulate the booking experience.
+
+## Design system
+
+The UI follows the **Operator design system**: dense, neutral-grayscale with three semantic accents (signal blue, positive green, halt red). Inter for text, JetBrains Mono for all numerics. Every number a user might compare or parse uses monospaced tabular figures. Sentence case in chrome, uppercase tracking only for eyebrow labels and table headers.
+
+Component primitives (`components/ui/`): Button, Badge, Card, ConfidenceMeter. Icons via Lucide React.
 
 ## Architecture
 
 - Next.js 16 App Router with TypeScript (strict mode) and Tailwind CSS v4
-- One API route (`/api/infer`) that calls the Anthropic API server-side
+- Operator design tokens in `app/globals.css` (CSS custom properties)
+- One API route (`/api/infer`) that calls the Anthropic API server-side, with IP rate limiting and mock fallback
 - All data in `lib/data/` as static TypeScript objects (no DB, no backend, no auth)
 - Vercel deploy from `main`
-- Built with [Claude Code](https://claude.ai/claude-code)
+- Built with [Claude Code](https://claude.ai/claude-code) and [Claude Design](https://claude.ai/design)
 
 ## Demo walkthrough
 
-Three views, one product. The walkthrough mirrors the strategic argument in the deck.
+A guided tour appears on first visit (reopen anytime via the pulsing ? icon in the header). After the tour, a sequential nudge flow highlights the next action at each step.
 
-1. **PCP View** (`/pcp`): The moment of order entry. Pathfinder reads Tom's chart, infers shoulder sub-specialty at 94% confidence, ranks three in-network specialists, and books inline.
-2. **Clinical Reasoning** (`/reasoning`): What the AI saw. The encounter note with highlighted evidence phrases and tooltip explanations of each clinical signal. Built for skeptical clinical informaticists.
-3. **Network Intelligence** (`/network`): The strategic surface. Capture rate, revenue at risk, leakage by specialty, and a recommended action identifying 18 shoulder referrals leaked to a single out-of-network group.
+Three views, one product:
+
+1. **PCP order entry** (`/pcp`): Two-column layout. Encounter note on the left with S/O/A/P sections. Referral order and "Run Pathfinder" trigger on the right. Clicking Run Pathfinder calls Claude Sonnet in real time. Results appear full-width below: inferred sub-specialty with confidence meter, evidence chips, and a ranked specialist table with fit scores, availability, and inline scheduling.
+2. **Clinical reasoning** (`/reasoning`): The encounter note with all evidence phrases highlighted and mapped to clinical signals. Right panel shows inference summary, confidence meter, ICD/CPT codes, evidence list, and rejected sub-specialties with reasoning.
+3. **Network intelligence** (`/network`): Three stat cards (referrals, leakage rate, revenue at risk) with mono numerics and delta badges. Recommended action callout identifying concentrated leakage to a single out-of-network group. Sortable leaked referrals table.
 
 ## Running locally
 
