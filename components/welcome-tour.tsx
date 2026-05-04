@@ -25,8 +25,14 @@ function useLocalStorage(key: string): [boolean, (v: boolean) => void] {
   return [value, setValue];
 }
 
-// --- Context for tour visibility ---
-const TourContext = createContext<{ open: () => void; nudge: boolean }>({ open: () => {}, nudge: false });
+// --- Nudge targets flow: run-pathfinder → open-reasoning → visit-network → null ---
+export type NudgeTarget = "run-pathfinder" | "open-reasoning" | "visit-network" | null;
+
+const TourContext = createContext<{
+  open: () => void;
+  nudgeTarget: NudgeTarget;
+  advanceNudge: () => void;
+}>({ open: () => {}, nudgeTarget: null, advanceNudge: () => {} });
 
 export function useTour() {
   return useContext(TourContext);
@@ -53,24 +59,33 @@ const steps = [
   },
 ];
 
+const NUDGE_SEQUENCE: NudgeTarget[] = ["run-pathfinder", "open-reasoning", "visit-network", null];
+
 export function TourProvider({ children }: { children: React.ReactNode }) {
   const [dismissed, setDismissed] = useLocalStorage(STORAGE_KEY);
   const [manualOpen, setManualOpen] = useState(false);
   const [step, setStep] = useState(0);
-  const [nudge, setNudge] = useState(false);
+  const [nudgeTarget, setNudgeTarget] = useState<NudgeTarget>(null);
 
   const visible = !dismissed || manualOpen;
 
   function dismiss() {
     setDismissed(true);
     setManualOpen(false);
-    setNudge(true);
+    setNudgeTarget("run-pathfinder");
   }
 
   function open() {
     setStep(0);
     setManualOpen(true);
-    setNudge(false);
+    setNudgeTarget(null);
+  }
+
+  function advanceNudge() {
+    setNudgeTarget((current) => {
+      const idx = NUDGE_SEQUENCE.indexOf(current);
+      return idx >= 0 && idx < NUDGE_SEQUENCE.length - 1 ? NUDGE_SEQUENCE[idx + 1] : null;
+    });
   }
 
   const current = steps[step];
@@ -78,7 +93,7 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   const isLast = step === steps.length - 1;
 
   return (
-    <TourContext.Provider value={{ open, nudge }}>
+    <TourContext.Provider value={{ open, nudgeTarget, advanceNudge }}>
       {children}
       {visible && (
         <div

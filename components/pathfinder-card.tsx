@@ -8,6 +8,7 @@ import {
 import { InferenceResult, Specialist } from "@/lib/types";
 import Badge from "./ui/badge";
 import Button from "./ui/button";
+import { useTour } from "./welcome-tour";
 import Card from "./ui/card";
 import ConfidenceMeter from "./ui/confidence-meter";
 
@@ -223,6 +224,8 @@ export default function PathfinderCard({
 }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [scheduling, setScheduling] = useState<string | null>(null);
+  const { nudgeTarget, advanceNudge } = useTour();
+  const reasoningPulse = nudgeTarget === "open-reasoning";
   const [confirmed, setConfirmed] = useState(false);
 
   const specialists = inference?.rankedSpecialists.slice(0, 3) ?? [];
@@ -414,16 +417,20 @@ export default function PathfinderCard({
             <Link
               href="/reasoning"
               className="op-focus"
+              onClick={reasoningPulse ? advanceNudge : undefined}
               style={{
                 font: "500 12px/16px var(--font-sans)",
                 color: "var(--signal-primary)",
-                background: "transparent",
+                background: reasoningPulse ? "var(--signal-primary-subtle)" : "transparent",
                 border: "none",
                 cursor: "pointer",
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 4,
                 textDecoration: "none",
+                padding: "4px 10px",
+                borderRadius: "var(--radius-control)",
+                animation: reasoningPulse ? "pulse-glow 2s ease-out infinite" : "none",
               }}
             >
               Open reasoning <ArrowRight size={12} strokeWidth={1.75} />

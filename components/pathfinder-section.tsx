@@ -78,7 +78,7 @@ export function PathfinderProvider({
 /** Compact trigger card: shows "Run Pathfinder" button or loading state. */
 export function PathfinderTrigger() {
   const ctx = useContext(PathfinderContext)!;
-  const { nudge } = useTour();
+  const { nudgeTarget } = useTour();
 
   if (ctx.inference) {
     return (
@@ -139,7 +139,7 @@ export function PathfinderTrigger() {
     );
   }
 
-  const shouldPulse = nudge && !ctx.inference && !ctx.loading;
+  const shouldPulse = nudgeTarget === "run-pathfinder" && !ctx.inference && !ctx.loading;
 
   return (
     <Card
@@ -165,6 +165,15 @@ export function PathfinderTrigger() {
 /** Full-width results card: renders only when inference is loaded. */
 export function PathfinderResults() {
   const ctx = useContext(PathfinderContext)!;
+  const { nudgeTarget, advanceNudge } = useTour();
+
+  // Advance nudge from run-pathfinder → open-reasoning when results arrive
+  useEffect(() => {
+    if (ctx.inference && nudgeTarget === "run-pathfinder") {
+      advanceNudge();
+    }
+  }, [ctx.inference, nudgeTarget, advanceNudge]);
+
   if (!ctx.inference) return null;
   return (
     <PathfinderCard

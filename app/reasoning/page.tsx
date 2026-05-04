@@ -5,6 +5,7 @@ import EncounterNoteDisplay from "@/components/encounter-note";
 import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
 import ConfidenceMeter from "@/components/ui/confidence-meter";
+import NudgeAdvance from "@/components/nudge-advance";
 
 const PATIENT_ID = "pat-001";
 
@@ -27,6 +28,7 @@ export default function ReasoningView() {
         padding: 24,
       }}
     >
+      <NudgeAdvance from="open-reasoning" />
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         {/* Header */}
         <div style={{ marginBottom: 16 }}>

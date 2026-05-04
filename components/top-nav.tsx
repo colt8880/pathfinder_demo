@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, Stethoscope } from "lucide-react";
 import Badge from "./ui/badge";
-import { TourButton } from "./welcome-tour";
+import { TourButton, useTour } from "./welcome-tour";
 
 const tabs: [string, string][] = [
   ["/pcp", "PCP order entry"],
@@ -14,6 +14,7 @@ const tabs: [string, string][] = [
 
 export default function TopNav() {
   const pathname = usePathname();
+  const { nudgeTarget, advanceNudge } = useTour();
 
   return (
     <header
@@ -55,22 +56,25 @@ export default function TopNav() {
       <div style={{ display: "flex", alignItems: "center", gap: 2, marginLeft: 12 }}>
         {tabs.map(([href, label]) => {
           const isActive = pathname === href;
+          const shouldPulse = nudgeTarget === "visit-network" && href === "/network";
           return (
             <Link
               key={href}
               href={href}
               className="op-focus"
+              onClick={shouldPulse ? advanceNudge : undefined}
               style={{
                 height: 32,
                 padding: "0 12px",
                 borderRadius: 6,
-                background: "transparent",
+                background: shouldPulse ? "var(--signal-primary-subtle)" : "transparent",
                 font: `${isActive ? 500 : 400} 13px/18px var(--font-sans)`,
                 color: isActive ? "var(--ink-primary)" : "var(--ink-secondary)",
                 boxShadow: isActive ? "inset 0 -2px 0 var(--signal-primary)" : "none",
                 display: "inline-flex",
                 alignItems: "center",
                 textDecoration: "none",
+                animation: shouldPulse ? "pulse-glow 2s ease-out infinite" : "none",
               }}
             >
               {label}
