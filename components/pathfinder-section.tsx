@@ -6,6 +6,7 @@ import PathfinderCard from "./pathfinder-card";
 import Card from "./ui/card";
 import Button from "./ui/button";
 import { Brain } from "lucide-react";
+import { useTour } from "./welcome-tour";
 
 const PROGRESS_STEPS = [
   "Reading encounter note...",
@@ -77,6 +78,7 @@ export function PathfinderProvider({
 /** Compact trigger card: shows "Run Pathfinder" button or loading state. */
 export function PathfinderTrigger() {
   const ctx = useContext(PathfinderContext)!;
+  const { nudge } = useTour();
 
   if (ctx.inference) {
     return (
@@ -137,8 +139,17 @@ export function PathfinderTrigger() {
     );
   }
 
+  const shouldPulse = nudge && !ctx.inference && !ctx.loading;
+
   return (
-    <Card padding={16}>
+    <Card
+      padding={16}
+      style={shouldPulse ? {
+        borderColor: "var(--signal-primary)",
+        animation: "pulse-glow 2s ease-out infinite",
+        borderRadius: "var(--radius-card)",
+      } : undefined}
+    >
       <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "center", padding: "8px 0" }}>
         <p style={{ font: "400 13px/18px var(--font-sans)", color: "var(--ink-muted)", textAlign: "center" }}>
           Analyze encounter note and recommend a sub-specialty referral

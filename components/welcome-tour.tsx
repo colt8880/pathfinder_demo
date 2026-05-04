@@ -26,7 +26,7 @@ function useLocalStorage(key: string): [boolean, (v: boolean) => void] {
 }
 
 // --- Context for tour visibility ---
-const TourContext = createContext<{ open: () => void }>({ open: () => {} });
+const TourContext = createContext<{ open: () => void; nudge: boolean }>({ open: () => {}, nudge: false });
 
 export function useTour() {
   return useContext(TourContext);
@@ -57,17 +57,20 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   const [dismissed, setDismissed] = useLocalStorage(STORAGE_KEY);
   const [manualOpen, setManualOpen] = useState(false);
   const [step, setStep] = useState(0);
+  const [nudge, setNudge] = useState(false);
 
   const visible = !dismissed || manualOpen;
 
   function dismiss() {
     setDismissed(true);
     setManualOpen(false);
+    setNudge(true);
   }
 
   function open() {
     setStep(0);
     setManualOpen(true);
+    setNudge(false);
   }
 
   const current = steps[step];
@@ -75,7 +78,7 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   const isLast = step === steps.length - 1;
 
   return (
-    <TourContext.Provider value={{ open }}>
+    <TourContext.Provider value={{ open, nudge }}>
       {children}
       {visible && (
         <div
